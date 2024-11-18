@@ -69,3 +69,42 @@
   {{item.title}}
   {{item.body}}
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div *ngIf = "user | async as user">
+  <p>Name : {{user.name}}</p>
+  <p>Email : {{user.email}}</p>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+  <h1>User Data</h1>
+  <pre>{{userData | json}}</pre>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!-- cause its a signal we need to use () -->
+<input 
+[value] = "newTodo()"
+(input)="handleinput($event)"
+placeholder="Enter Todo"/>
+<button (click) = "addTooDo()">Add Todo</button>
+<ul>
+  <li>Total Items : {{totalToDoItems()}}</li>
+  <li *ngFor = "let todo of todos()">
+    <span>{{todo.title}}</span>
+    <button (click)="deleteToDo(todo.id)">Delete Todo</button>
+  </li>
+</ul>
+<br>
+<br>
+<br>
+<br>
