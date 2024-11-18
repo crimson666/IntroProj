@@ -1,6 +1,6 @@
 import { Component, effect } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AsyncPipe, JsonPipe, NgClass, NgStyle } from '@angular/common';
 import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { AppendPipe } from './pipes/append.pipe';
@@ -10,6 +10,9 @@ import { Data } from './interfaces/data';
 import { UserService } from './services/user.service';
 import { signal, computed } from '@angular/core';
 import { Todo } from './interfaces/todo';
+import { User } from './interfaces/user';
+import { Post } from './interfaces/post';
+import { MessegeService } from './services/messege.service';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +32,7 @@ import { Todo } from './interfaces/todo';
     AsyncPipe,
     JsonPipe
   ],
-  providers: [DataService],
+  providers: [DataService, MessegeService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -105,7 +108,14 @@ export class AppComponent {
   // so computed is based on the event of a value we can return an signal, btw its a signal that has been returned
   totalToDoItems = computed(() => this.todos().length);
 
-  constructor(private dataService: DataService, private userService: UserService) {
+  userInfo: User = {
+    name: '',
+    email: '',
+  };
+
+  Posts: Post[] = [];
+
+  constructor(private dataService: DataService, private userService: UserService, private messegeService: MessegeService) {
     this.data = this.dataService.getData();
     //so effcts do nearly the same thisg but does not return anything
     effect(() => {
@@ -147,5 +157,16 @@ export class AppComponent {
   deleteToDo(id: number) {
     const updatedTodos = this.todos().filter((todo) => todo?.id !== id);
     this.todos.set(updatedTodos);
+  }
+
+  submitForm(form: NgForm) {
+    if (form.valid) {
+      console.log(form.value, this.userInfo);
+    }
+  }
+
+  validateEmail(): boolean {
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return emailRegex.test(this.userInfo?.email);
   }
 }

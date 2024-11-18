@@ -108,3 +108,23 @@ placeholder="Enter Todo"/>
 <br>
 <br>
 <br>
+<div>
+  <h2>User Form</h2>
+  <form #userForm="ngForm" (ngSubmit)="submitForm(userForm)">
+    <div>
+      <label for = "name">Name :</label>
+      <input type="text" name = "name" id="name" [(ngModel)]="userInfo.name" required/>
+    </div>
+    <div>
+      <label for = "email">Email :</label>
+      <input type="email" name = "email" id="email" [(ngModel)]="userInfo.email" required/>
+    </div>
+    <div>
+      <button type = "submit" [disabled]="userForm.inValid | !validateEmail()">Submit</button>
+    </div>
+  </form>
+</div>
+<br>
+<br>
+<br>
+<br>
