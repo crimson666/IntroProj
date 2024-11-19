@@ -120,7 +120,7 @@ placeholder="Enter Todo"/>
       <input type="email" name = "email" id="email" [(ngModel)]="userInfo.email" required/>
     </div>
     <div>
-      <button type = "submit" [disabled]="userForm.inValid | !validateEmail()">Submit</button>
+      <button type = "submit" [disabled]="userForm.invalid || !validateEmail()">Submit</button>
     </div>
   </form>
 </div>

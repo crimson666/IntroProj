@@ -13,6 +13,7 @@ import { Todo } from './interfaces/todo';
 import { User } from './interfaces/user';
 import { Post } from './interfaces/post';
 import { MessegeService } from './services/messege.service';
+import { latestprices, orderBook, students } from './interfaces/store';
 
 @Component({
   selector: 'app-root',
@@ -126,10 +127,38 @@ export class AppComponent {
   }
 
   data2: Data[] = [];
+  //studentsData: students = [];
   ngOnInit() {
     this.dataService.getPosts().subscribe({
       next: (res: Data[]) => {
         this.data2 = res;
+      },
+      error: (err: Error) => {
+        console.log('Error', err);
+      }
+    })
+
+    this.messegeService.getStudentsPosts().subscribe({
+      next: (res: students) => {
+        console.log(res);
+      },
+      error: (err: Error) => {
+        console.log('Error', err);
+      }
+    })
+
+    this.messegeService.getoutorderPosts().subscribe({
+      next: (res: orderBook) => {
+        console.log(res);
+      },
+      error: (err: Error) => {
+        console.log('Error', err);
+      }
+    })
+
+    this.messegeService.getlatestpricesPosts().subscribe({
+      next: (res: latestprices) => {
+        console.log(res);
       },
       error: (err: Error) => {
         console.log('Error', err);
