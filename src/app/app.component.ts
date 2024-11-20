@@ -14,6 +14,7 @@ import { User } from './interfaces/user';
 import { Post } from './interfaces/post';
 import { MessegeService } from './services/messege.service';
 import { latestprices, orderBook, students } from './interfaces/store';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ import { latestprices, orderBook, students } from './interfaces/store';
     AppendPipe,
     UpperCasePipe,
     AsyncPipe,
-    JsonPipe
+    JsonPipe,
+    ReactiveFormsModule
   ],
   providers: [DataService, MessegeService],
   templateUrl: './app.component.html',
@@ -113,21 +115,58 @@ export class AppComponent {
     name: '',
     email: '',
   };
-
   Posts: Post[] = [];
+  UserFrom2!: FormGroup;
 
-  constructor(private dataService: DataService, private userService: UserService, private messegeService: MessegeService) {
+
+  constructor(private dataService: DataService,
+    private userService: UserService,
+    private messegeService: MessegeService,
+    private formBuilder: FormBuilder) {
     this.data = this.dataService.getData();
-    //so effcts do nearly the same thisg but does not return anything
+    //so effcts do nearly the same thisg like signal but does not return anything
     effect(() => {
       const items = this.todos().length;
       const even = items % 2 === 0 ? 'even' : 'odd';
       console.log(`Total number of items: ${items} which is ${even}`);
     });
+
+    this.UserFrom2 = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      address2: this.formBuilder.group({
+        street: ['', Validators.required],
+        city: ['', Validators.required],
+        state: ['', Validators.required]
+      }),
+      hobbies: ['', Validators.required],
+      phone: this.formBuilder.array([
+        this.formBuilder.control('', [
+          Validators.required,
+          Validators.pattern(/^\+(?:[0-9] ?){6,14}[0-9]$|^\(?[\d]{3}\)?[-. ]?[\d]{3}[-. ]?[\d]{4}$/)
+        ]),
+      ])
+    });
+
+  }
+  //end of constructor
+
+  get phone(): FormArray {
+    return this.UserFrom2.get('phone') as FormArray;
+  }
+
+
+  submitUserForm() {
+    if (this.UserFrom2.valid) {
+      const user = this.UserFrom2.value;
+      console.log(user);
+    }
   }
 
   data2: Data[] = [];
   //studentsData: students = [];
+
+
   ngOnInit() {
     this.dataService.getPosts().subscribe({
       next: (res: Data[]) => {
