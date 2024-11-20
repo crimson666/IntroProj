@@ -140,10 +140,10 @@ export class AppComponent {
         state: ['', Validators.required]
       }),
       hobbies: ['', Validators.required],
-      phone: this.formBuilder.array([
+      phoneNos: this.formBuilder.array([
         this.formBuilder.control('', [
           Validators.required,
-          Validators.pattern(/^\+(?:[0-9] ?){6,14}[0-9]$|^\(?[\d]{3}\)?[-. ]?[\d]{3}[-. ]?[\d]{4}$/)
+          Validators.pattern(/^\d{10}$/)
         ]),
       ])
     });
@@ -152,15 +152,32 @@ export class AppComponent {
   //end of constructor
 
   get phone(): FormArray {
-    return this.UserFrom2.get('phone') as FormArray;
+    return this.UserFrom2.get('phoneNos') as FormArray;
   }
 
+  addPhoneNumber() {
+    this.phone.push(this.formBuilder.control('', [
+      Validators.required,
+      Validators.pattern(/^\d{10}$/)
+    ]));
+  }
+
+  deletePhoneNumber(i: number) {
+    if (this.phone.length > 1) {
+      this.phone.removeAt(i);
+    }
+  }
 
   submitUserForm() {
     if (this.UserFrom2.valid) {
       const user = this.UserFrom2.value;
       console.log(user);
     }
+  }
+
+  consoleFormData() {
+    const user = this.UserFrom2.value;
+    console.log(user);
   }
 
   data2: Data[] = [];

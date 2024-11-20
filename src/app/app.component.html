@@ -155,6 +155,19 @@ placeholder="Enter Todo"/>
     <label for = "hobbies">Hobbies    :</label>
     <input type = "text" name = "hobbies" id = "hobbies" formControlName="hobbies" placeholder="Enter Hobbies"/>
   </div>
+  <div formArrayName="phoneNos">
+    <div *ngFor="let phoneNo of phone.controls; let i = index">
+      <label for = "phoneNo">Phone No {{i+1}} :</label>
+       <input type = "text" name = "phoneNo" id = "phoneNo" [formControlName]="i" placeholder="Enter Phone No"/>
+       <button type="button" (click)="deletePhoneNumber(i)">Remove</button>
+    </div>
+  </div>
+  <div>
+      <button (click)="addPhoneNumber()">Add Phone No</button>
+  </div>
+  <div>
+    <button (click)="consoleFormData()">Console Data</button>
+</div>
   <button [disabled]="UserFrom2.invalid" type="submit">Submit</button>
 
 </form>
