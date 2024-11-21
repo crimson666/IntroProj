@@ -167,7 +167,16 @@ placeholder="Enter Todo"/>
   </div>
   <div>
     <button (click)="consoleFormData()">Console Data</button>
-</div>
+  </div>
   <button [disabled]="UserFrom2.invalid" type="submit">Submit</button>
-
 </form>
+<br>
+<br>
+<br>
+<br>
+<div>
+  <h1>Task</h1>
+  @for(task of tasks; track task){
+    <app-task [val]="task" (deleteTask) = "deleteTask(task)" ></app-task>
+  }
+</div>

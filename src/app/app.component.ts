@@ -15,6 +15,7 @@ import { Post } from './interfaces/post';
 import { MessegeService } from './services/messege.service';
 import { latestprices, orderBook, students } from './interfaces/store';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TaskComponent } from './components/task/task.component';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,8 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
     UpperCasePipe,
     AsyncPipe,
     JsonPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TaskComponent
   ],
   providers: [DataService, MessegeService],
   templateUrl: './app.component.html',
@@ -253,5 +255,11 @@ export class AppComponent {
   validateEmail(): boolean {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailRegex.test(this.userInfo?.email);
+  }
+
+  tasks: string[] = ['Sleep', 'eat', 'workout'];
+
+  deleteTask(task: string) {
+    this.tasks = this.tasks.filter((t) => t !== task);
   }
 }
