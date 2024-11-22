@@ -11,7 +11,7 @@ export class MessegeService {
 
   constructor(private http: HttpClient) { }
 
-  private url = 'https://jsonplaceholder.typicode.com/posts';
+  url = 'https://jsonplaceholder.typicode.com/posts';
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.url);
   }
